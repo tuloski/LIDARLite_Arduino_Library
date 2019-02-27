@@ -159,9 +159,65 @@ void LIDARLite::setI2Caddr(char newAddress, char disableDefault, char lidarliteA
   if (disableDefault)
   {
     dataBytes[0] = (1 << 3); // set bit to disable default address
-    write(0x1e, dataBytes[0], newAddress);
+    write(0x1e, dataBytes[0], lidarliteAddress);
   }
 } /* LIDARLite::setI2Caddr */
+
+/*------------------------------------------------------------------------------
+  Set I2C Address with Serial Number
+
+  Set Alternate I2C Device Address via Serial Number. See Operation Manual for additional info.
+  Used when multiple devices are on the I2C bus and we want to change address only to a specific LIDAR
+  identified with serial number.
+
+  Parameters
+  ------------------------------------------------------------------------------
+  newAddress: desired secondary I2C device address
+  disableDefault: a non-zero value here means the default 0x62 I2C device
+    address will be disabled.
+  lidarliteAddress: Default 0x62. Fill in new address here if changed. See
+    operating manual for instructions.
+------------------------------------------------------------------------------*/
+void LIDARLite::setI2CaddrSerial(char newAddress, char disableDefault, byte serialNumber[2], char lidarliteAddress)
+{
+  byte dataByte;
+  
+  // Write serial number them into I2C_ID byte locations
+  write(0x18, serialNumber[0], lidarliteAddress);
+  write(0x19, serialNumber[1], lidarliteAddress);
+
+  // Write the new I2C device address to registers
+  dataByte = newAddress;
+  write(0x1a, dataByte, lidarliteAddress);
+
+  // Enable the new I2C device address using the default I2C device address
+  dataByte = 0;
+  write(0x1e, dataByte, lidarliteAddress);
+
+  // If desired, disable default I2C device address (using the new I2C device address)
+  if (disableDefault)
+  {
+    dataByte = (1 << 3); // set bit to disable default address
+    write(0x1e, dataByte, lidarliteAddress);
+  }
+} /* LIDARLite::setI2CaddrSerial */
+
+/*------------------------------------------------------------------------------
+  Get Serial Number
+
+  Get 2 bytes of serial number
+
+  Parameters
+  ------------------------------------------------------------------------------
+  serialNumber: array of 2 bytes to get the serial number
+  lidarliteAddress: Default 0x62. Fill in new address here if changed. See
+    operating manual for instructions.
+------------------------------------------------------------------------------*/
+void LIDARLite::getSerialNumber(byte serialNumber[2], char lidarliteAddress)
+{
+  // Read UNIT_ID serial number bytes
+  read ((0x16 | 0x80), 2, serialNumber, false, lidarliteAddress);
+} /* LIDARLite::getSerialNumber */
 
 /*------------------------------------------------------------------------------
   Reset

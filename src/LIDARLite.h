@@ -36,6 +36,8 @@ class LIDARLite
       void begin(int = 0, bool = false, char = LIDARLITE_ADDR_DEFAULT);
       void configure(int = 0, char = LIDARLITE_ADDR_DEFAULT);
       void setI2Caddr(char, char, char = LIDARLITE_ADDR_DEFAULT);
+	  void setI2CaddrSerial(char, char , byte serialNumber[2], char = LIDARLITE_ADDR_DEFAULT);
+	  void getSerialNumber(byte serialNumber[2], char = LIDARLITE_ADDR_DEFAULT);
       void reset(char = LIDARLITE_ADDR_DEFAULT);
       int distance(bool = true, char = LIDARLITE_ADDR_DEFAULT);
       void write(char, char, char = LIDARLITE_ADDR_DEFAULT);
