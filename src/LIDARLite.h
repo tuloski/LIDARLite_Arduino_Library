@@ -33,7 +33,7 @@ class LIDARLite
 {
   public:
       LIDARLite();
-      void begin(int = 0, bool = false, char = LIDARLITE_ADDR_DEFAULT);
+      void begin(bool = false, char = LIDARLITE_ADDR_DEFAULT);
       void configure(int = 0, char = LIDARLITE_ADDR_DEFAULT);
       void setI2Caddr(char, char, char = LIDARLITE_ADDR_DEFAULT);
 	  void setI2CaddrSerial(char, char , byte serialNumber[2], char = LIDARLITE_ADDR_DEFAULT);

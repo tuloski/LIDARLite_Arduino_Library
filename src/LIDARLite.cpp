@@ -48,7 +48,7 @@ LIDARLite::LIDARLite(){}
   lidarliteAddress: Default 0x62. Fill in new address here if changed. See
     operating manual for instructions.
 ------------------------------------------------------------------------------*/
-void LIDARLite::begin(int configuration, bool fasti2c, char lidarliteAddress)
+void LIDARLite::begin(bool fasti2c, char lidarliteAddress)
 {
   Wire.begin(); // Start I2C
   if(fasti2c)
@@ -59,7 +59,6 @@ void LIDARLite::begin(int configuration, bool fasti2c, char lidarliteAddress)
       TWBR = ((F_CPU / 400000UL) - 16) / 2; // Set I2C frequency to 400kHz
     #endif
   }
-  configure(configuration, lidarliteAddress); // Configuration settings
 } /* LIDARLite::begin */
 
 /*------------------------------------------------------------------------------
